@@ -8,8 +8,8 @@
     "start": "react-native start",
     "clean": "rm -rf node_modules",
     "prettier:base": "prettier --single-quote",
-    "prettier:check": "yarn prettier:base --list-different \"src/**/*.+(js|jsx|json|md)\"",
-    "prettier:fix": "yarn prettier:base --write \"src/**/*.+(js|jsx|json|md)\"",
+    "prettier:check": "yarn prettier:base --list-different \"**/*.+(js|jsx|json|md)\"",
+    "prettier:fix": "yarn prettier:base --write \"**/*.+(js|jsx|json|md)\"",
     "lint:js": "eslint src/**/*.js src/**/*.jsx",
     "lint:fix": "lint:js --fix",
     "test": "jest --coverage --passWithNoTests"

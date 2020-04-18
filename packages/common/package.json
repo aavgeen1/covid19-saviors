@@ -7,8 +7,8 @@
     "clean": "rm -rf node_modules",
     "lint:js": "eslint src/**/*.js src/**/*.jsx",
     "prettier:base": "prettier --single-quote",
-    "prettier:check": "yarn prettier:base --list-different \"src/**/*.+(js|jsx|json|md)\"",
-    "prettier:fix": "yarn prettier:base --write \"src/**/*.+(js|jsx|json|md)\"",
+    "prettier:check": "yarn prettier:base --list-different \"**/*.+(js|jsx|json|md)\"",
+    "prettier:fix": "yarn prettier:base --write \"**/*.+(js|jsx|json|md)\"",
     "lint": "yarn lint:js",
     "lint:fix": "yarn lint:js --fix",
     "test": "jest --coverage --passWithNoTests"
