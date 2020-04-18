@@ -1,0 +1,23 @@
+{
+    "extends": "stylelint-config-standard",
+    "plugins": [
+        "stylelint-no-browser-hacks/lib"
+    ],
+    "rules": {
+        "indentation": 2,
+        "string-quotes": "double",
+        "no-duplicate-selectors": true,
+        "color-hex-case": "lower",
+        "color-hex-length": "long",
+        "color-named": "never",
+        "property-no-unknown": true,
+        "color-no-invalid-hex": true,
+        "declaration-block-semicolon-newline-after": "always",
+        "plugin/no-browser-hacks": [true, {
+          "browsers": [
+            "last 2 versions",
+            "ie >=8"
+          ]
+        }],
+    }
+}

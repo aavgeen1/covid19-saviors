@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "outDir": "./dist",
+        "allowJs": true,
+        "sourceMap": true,
+        "experimentalDecorators": true, 
+        "emitDecoratorMetadata": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "moduleResolution": "node",
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@covid19-saviors/mobileapp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "clean": "rm -rf node_modules",
+    "prettier:base": "prettier --single-quote",
+    "prettier:check": "yarn prettier:base --list-different \"src/**/*.+(js|jsx|json|md)\"",
+    "prettier:fix": "yarn prettier:base --write \"src/**/*.+(js|jsx|json|md)\"",
+    "lint:js": "eslint src/**/*.js src/**/*.jsx"
+  },
+  "dependencies": {
+    "@covid19-saviors/common": "1.0.0",
+    "react": "^16.13.1",
+    "react-native": "^0.62.2",
+    "react-native-paper": "^3.8.0",
+    "react-native-vector-icons": "^6.6.0"
+  },
+  "devDependencies": {
+    "babel-plugin-module-resolver": "4.0.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.4"
+  }
+}
