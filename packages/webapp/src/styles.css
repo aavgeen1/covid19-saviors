@@ -1,0 +1,19 @@
+/* purgecss start ignore */
+@tailwind base;
+
+/* Declare fonts here */
+/* @font-face {
+  font-family: Adelle Sans;
+  font-weight: 400;
+  src: url(//db.onlinewebfonts.com/t/ca30dd8d1221a2c8cdaf8b37b2d637b3.woff2) format("woff");
+}
+@font-face {
+  font-family: Stratos;
+  font-weight: 600;
+  src: url(https://consumer-component-library.roocdn.com/19.2.1/static/fonts/stratos-semibold.b00ca2148f03da7f28865214a97c568e.woff2) format("woff");
+} */
+
+@tailwind components;
+/* purgecss end ignore */
+
+@tailwind utilities;
