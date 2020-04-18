@@ -25,6 +25,11 @@
     "lerna": "^3.14.1",
     "parcel-bundler": "1.12.4"
   },
+  "resolutions": {
+    "acorn": "^7.1.1",
+    "minimist": "^1.2.3",
+    "kind-of": "^6.0.3"
+  },
   "workspaces": [
     "packages/*"
   ]
