@@ -6,9 +6,6 @@
   "repository": "https://github.com/aavgeen1/zero-hunger.git",
   "author": "Aavgeen Singh <contact@aavgeen.com>",
   "license": "MIT",
-  "dependencies": {
-    "react-native": "*"
-  },
   "scripts": {
     "clean": "yarn clean:artifacts && yarn clean:packages && yarn clean:root",
     "clean:artifacts": "lerna run clean --parallel",
@@ -26,12 +23,12 @@
     "lint:fix:app": "cd packages/mobileapp && yarn lint:fix && cd ../..",
     "lint:fix:server": "cd packages/server && yarn lint:fix && cd ../..",
     "lint:fix:web": "cd packages/webapp && yarn lint:fix && cd ../..",
-    "lint:fix": "yarn lint:fix:common && yarn lint:fix:app && yarn lint:fix:server && yarn lint:fix:web",
+    "lint:fix": "yarn workspaces run lint:fix",
     "prettier:common:fix": "cd packages/common && yarn prettier:fix && cd ../..",
     "prettier:app:fix": "cd packages/mobileapp && yarn prettier:fix && cd ../..",
     "prettier:server:fix": "cd packages/server && yarn prettier:fix && cd ../..",
     "prettier:web:fix": "cd packages/webapp && yarn prettier:fix && cd ../..",
-    "prettier:fix": "yarn prettier:common:fix && yarn prettier:app:fix && yarn prettier:server:fix && yarn prettier:web:fix",
+    "prettier:fix": "yarn workspaces run prettier:fix",
     "prettier:common:check": "cd packages/common && yarn prettier:check && cd ../..",
     "prettier:app:check": "cd packages/mobileapp && yarn prettier:check && cd ../..",
     "prettier:server:check": "cd packages/server && yarn prettier:check && cd ../..",
@@ -41,7 +38,7 @@
     "test:app": "cd packages/mobileapp && yarn test && cd ../..",
     "test:server": "cd packages/server && yarn test && cd ../..",
     "test:common": "cd packages/common && yarn test && cd ../..",
-    "test": "yarn test:web && yarn test:app && yarn test:server",
+    "test": "yarn workspaces run test",
     "build:web": "cd packages/webapp && yarn build && cd ../..",
     "build:android": "cd packages/mobileapp && yarn android && cd ../..",
     "build:ios": "cd packages/mobileapp && yarn ios && cd ../..",
@@ -50,18 +47,14 @@
     "start:app": "cd packages/mobileapp && yarn start && cd ../..",
     "start:web": "cd packages/webapp && yarn start && cd ../.."
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,css,md}": [
-      "yarn prettier:fix",
-      "yarn lint:fix",
-      "git add"
-    ]
-  },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "lint-staged && yarn test"
+      "pre-commit": "lerna run --concurrency 1 --stream precommit --since HEAD",
+      "pre-push": "lerna run --concurrency 1 --stream precommit --since HEAD && yarn test"
     }
+  },
+  "dependencies": {
+    "react-native": "*"
   },
   "devDependencies": {
     "@babel/core": "7.7.7",
@@ -72,7 +65,6 @@
     "eslint": "6.8.0",
     "husky": "^4.2.5",
     "lerna": "^3.14.1",
-    "lint-staged": "^10.1.5",
     "parcel-bundler": "1.12.4"
   },
   "resolutions": {

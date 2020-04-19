@@ -23,7 +23,14 @@
     "lint:js:fix": "yarn lint:js --fix",
     "lint:css:fix": "yarn lint:css --fix",
     "lint:fix": "yarn lint:js:fix && yarn lint:css:fix",
-    "test": "jest --coverage --passWithNoTests"
+    "test": "jest --coverage --passWithNoTests",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,css,md}": [
+      "lerna run --concurrency 1 --stream prettier:fix --since HEAD",
+      "lerna run --concurrency 1 --stream lint:fix --since HEAD"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -39,6 +46,7 @@
     "stylelint": "^13.3.2",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-no-browser-hacks": "^1.2.1",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.2.0",
+    "lint-staged": "^10.1.5"
   }
 }

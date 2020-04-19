@@ -12,7 +12,14 @@
     "prettier:fix": "yarn prettier:base --write \"**/*.+(js|jsx|json|md)\"",
     "lint:js": "eslint **/*.js",
     "lint:fix": "yarn lint:js --fix",
-    "test": "jest --coverage --passWithNoTests"
+    "test": "jest --coverage --passWithNoTests",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,css,md}": [
+      "lerna run --concurrency 1 --stream prettier:fix --since HEAD",
+      "lerna run --concurrency 1 --stream lint:fix --since HEAD"
+    ]
   },
   "dependencies": {
     "@covid19-saviors/common": "1.0.0",
@@ -30,6 +37,7 @@
     "jest": "^25.3.0",
     "prettier": "^2.0.4",
     "react-native-testing-library": "^1.13.0",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "lint-staged": "^10.1.5"
   }
 }

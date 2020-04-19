@@ -11,9 +11,16 @@
     "deploy:dev": "gcloud app deploy --project covid19-savior-app --no-promote",
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "yarn prettier:base --list-different \"src/**/*.ts\"",
-    "prettier:fix": "yarn prettier:base --write \"src/**/*.ts\""
+    "prettier:fix": "yarn prettier:base --write \"src/**/*.ts\"",
+    "precommit": "lint-staged"
   },
   "license": "MIT",
+  "lint-staged": {
+    "*.{js,jsx,ts,css,md}": [
+      "lerna run --concurrency 1 --stream prettier:fix --since HEAD",
+      "lerna run --concurrency 1 --stream lint:fix --since HEAD"
+    ]
+  },
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "class-validator": "^0.11.1",
@@ -47,6 +54,7 @@
     "tslint": "^6.1.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.6.2"
+    "typescript": "^3.6.2",
+    "lint-staged": "^10.1.5"
   }
 }
