@@ -44,7 +44,8 @@ export default class PostController {
     postToBeSaved.picturesUris = ctx.request.body.pictureUris;
     postToBeSaved.createdAt = new Date();
     // validate job entity
-    const errors: Errormessage[] = validatePost(postToBeSaved); // errors is an array of validation errors
+    const errors: Errormessage[] = validatePost(postToBeSaved);
+    // errors is an array of validation errors
 
     if (errors.length > 0) {
       // return BAD REQUEST status code and errors array
@@ -84,21 +85,26 @@ export default class PostController {
     const document: any = {};
     // postToBeUpdated.id = ctx.request.body.id
     if (ctx.request.body.title) document.title = ctx.request.body.title;
-    if (ctx.request.body.description)
+    if (ctx.request.body.description) {
       document.description = ctx.request.body.description;
-    if (ctx.request.body.picturesUris)
+    }
+    if (ctx.request.body.picturesUris) {
       document.picturesUris = ctx.request.body.picturesUris;
-    if (ctx.request.body.latitude)
+    }
+    if (ctx.request.body.latitude) {
       document.latitude = ctx.request.body.latitude;
-    if (ctx.request.body.longitude)
+    }
+    if (ctx.request.body.longitude) {
       document.longitude = ctx.request.body.longitude;
+    }
     if (ctx.request.body.address) document.address = ctx.request.body.address;
 
     document.updatedAt = new Date();
 
     postToBeUpdated = document;
     // validate user entity
-    const errors: Errormessage[] = validatePost(postToBeUpdated); // errors is an array of validation errors
+    const errors: Errormessage[] = validatePost(postToBeUpdated);
+    // errors is an array of validation errors
 
     if (errors.length > 0) {
       // return BAD REQUEST status code and errors array
@@ -123,7 +129,7 @@ export default class PostController {
       // save the post contained in the PUT body
       const newPost = await post.findByIdAndUpdate(
         ctx.params.id,
-        postToBeUpdated
+        postToBeUpdated,
       );
       // return CREATED/UPDATED status code and updated post
       ctx.status = 201;

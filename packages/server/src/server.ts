@@ -7,7 +7,7 @@ import * as winston from 'winston';
 import { logger } from './logging';
 import { config } from './config';
 import { postRoutes } from './routes';
-import connectDatabase from './mongo';
+import mongo from './mongo';
 
 const app = new Koa();
 
@@ -27,7 +27,6 @@ app.use(logger(winston));
 // error handling
 app.use(async (ctx: Koa.Context, next) => {
   try {
-    console.log('Url:', ctx.url);
     // Pass the request to the next middleware function, in this case: winston
     await next();
   } catch (err) {
@@ -48,6 +47,6 @@ app.use(postRoutes.routes()).use(postRoutes.allowedMethods());
 
 const server = app.listen(config.port);
 
-console.log('\x1b[32m', 'Server running on port ' + config.port);
+console.log(`\x1b[32m Server running on port ${config.port}`);
 
 export default server;

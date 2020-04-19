@@ -3,7 +3,8 @@ import { config } from './config';
 import * as winston from 'winston';
 
 export function logger(winstonInstance: any) {
-  // Each winston logger can have multiple transports (see: Transports) configured at different levels (see: Logging levels).
+  // Each winston logger can have multiple transports (see: Transports)
+  // configured at different levels (see: Logging levels).
   winstonInstance.configure({
     level: config.debugLogging ? 'debug' : 'info',
     transports: [
@@ -16,7 +17,7 @@ export function logger(winstonInstance: any) {
         format: winston.format.combine(
           winston.format.colorize(),
           winston.format.simple(),
-          winston.format.timestamp()
+          winston.format.timestamp(),
         ),
       }),
     ],

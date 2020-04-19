@@ -1,7 +1,8 @@
 module.exports = {
-    extends: "react-app",
-    plugins: ["prettier"],
-    rules: {
-      "prettier/prettier": "error"
-    }
-  }
+  root: true,
+  extends: '@react-native-community',
+  plugins: ['prettier'],
+  rules: {
+    'prettier/prettier': 'error',
+  },
+};

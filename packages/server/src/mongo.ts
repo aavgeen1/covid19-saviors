@@ -2,7 +2,7 @@ import { config } from './config';
 import { connect, connection as db } from 'mongoose';
 
 const MONGO_URL = encodeURI(
-  `mongodb+srv://${config.dbuser}:${config.dbpassword}@cluster0-c8npu.gcp.mongodb.net/test?retryWrites=true&w=majority`
+  `mongodb+srv://${config.dbuser}:${config.dbpassword}@cluster0-c8npu.gcp.mongodb.net/test?retryWrites=true&w=majority`,
 );
 
 const connectDatabase = () => {

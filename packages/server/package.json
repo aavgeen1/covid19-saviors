@@ -2,18 +2,25 @@
   "name": "@covid19-saviors/server",
   "version": "1.0.0",
   "scripts": {
-    "start:dev": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
+    "start": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
     "lint": "tslint -c tslint.json -p tsconfig.json",
+    "lint:fix": "yarn lint --fix",
     "serve": "node dist/server.js",
     "build": "tsc",
-    "start": "yarn build && yarn serve",
-    "test": "jest --coverage",
+    "test": "jest --coverage --passWithNoTests",
     "deploy:dev": "gcloud app deploy --project covid19-savior-app --no-promote",
     "prettier:base": "prettier --parser typescript --single-quote",
-    "prettier:check": "yarn prettier:base -- --list-different \"src/**/*.ts\"",
-    "prettier:fix": "yarn prettier:base -- --write \"src/**/*.ts\""
+    "prettier:check": "yarn prettier:base --list-different \"src/**/*.ts\"",
+    "prettier:fix": "yarn prettier:base --write \"src/**/*.ts\"",
+    "precommit": "lint-staged"
   },
   "license": "MIT",
+  "lint-staged": {
+    "*.{js,jsx,ts,css,md}": [
+      "yarn prettier:fix",
+      "yarn lint:fix"
+    ]
+  },
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "class-validator": "^0.11.1",
@@ -47,6 +54,7 @@
     "tslint": "^6.1.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.6.2"
+    "typescript": "^3.6.2",
+    "lint-staged": "^10.1.5"
   }
 }

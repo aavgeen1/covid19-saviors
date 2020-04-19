@@ -1,7 +1,7 @@
 import React from 'react';
-import {title} from '@covid19-saviors/common/stringUtils';
+import {title} from '@covid19-saviors/common/utils';
 import {Text, View} from 'react-native';
-import {add} from '@covid19-saviors/common/mathUtils';
+import {add} from '@covid19-saviors/common/utils';
 import {Provider as PaperProvider, Button} from 'react-native-paper';
 
 const App = () => {
