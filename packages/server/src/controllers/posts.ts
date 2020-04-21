@@ -35,13 +35,38 @@ export default class PostController {
   public static async createPost(ctx: Context) {
     // get a user repository to perform operations with user
     // build up entity user to be saved
+    const {
+      request: {
+        body: {
+          title,
+          description,
+          address,
+          pickup_location,
+          pictureUris,
+          providingOffering,
+          itemType,
+          phoneNumber,
+          listingDaysLife,
+        },
+      },
+    } = ctx;
     const postToBeSaved: Post = new post();
-    postToBeSaved.title = ctx.request.body.title;
-    postToBeSaved.description = ctx.request.body.description;
-    postToBeSaved.address = ctx.request.body.address;
-    postToBeSaved.latitude = ctx.request.body.latitude;
-    postToBeSaved.longitude = ctx.request.body.longitude;
-    postToBeSaved.picturesUris = ctx.request.body.pictureUris;
+    postToBeSaved.title = title;
+    postToBeSaved.description = description;
+    postToBeSaved.address = address;
+    postToBeSaved.pickup_location = {
+      latitude: pickup_location.latitude,
+      longitude: pickup_location.longitude,
+    };
+    postToBeSaved.picturesUris = pictureUris;
+    postToBeSaved.providingOffering = providingOffering;
+    postToBeSaved.itemType = {
+      cookedMeals: itemType.cookedMeals,
+      groceries: itemType.groceries,
+      supplies: itemType.supplies,
+    };
+    postToBeSaved.phoneNumber = phoneNumber;
+    postToBeSaved.listingDaysLife = listingDaysLife;
     postToBeSaved.createdAt = new Date();
     // validate job entity
     const errors: Errormessage[] = validatePost(postToBeSaved);
@@ -58,7 +83,6 @@ export default class PostController {
       await post.findOne({
         description: postToBeSaved.description,
         title: postToBeSaved.title,
-        address: postToBeSaved.address,
       })
     ) {
       // return BAD REQUEST
@@ -91,13 +115,13 @@ export default class PostController {
     if (ctx.request.body.picturesUris) {
       document.picturesUris = ctx.request.body.picturesUris;
     }
-    if (ctx.request.body.latitude) {
-      document.latitude = ctx.request.body.latitude;
+    if (ctx.request.body.pickup_location.latitude) {
+      document.pickup_location.latitude = ctx.request.body.latitude;
     }
-    if (ctx.request.body.longitude) {
-      document.longitude = ctx.request.body.longitude;
+    if (ctx.request.body.pickup_location.longitude) {
+      document.pickup_location.longitude =
+        ctx.request.body.pickup_location.longitude;
     }
-    if (ctx.request.body.address) document.address = ctx.request.body.address;
 
     document.updatedAt = new Date();
 
@@ -121,7 +145,7 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: "The post you are trying to update doesn't already",
+            message: "The post you are trying to update doesn't exist already",
           },
         ],
       };

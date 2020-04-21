@@ -4,10 +4,10 @@ module.export = {
     '\\.(js|jsx)?$': 'babel-jest',
   },
   testMatch: ['<rootDir>/src/**/>(*.)spec.{js, jsx}'], // finds test
-  moduleFileExtensions: ['js', 'jsx', 'json', 'node' ],
+  moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
   testPathIgnorePatterns: ['/node_modules/', '/public/'],
   setupFilesAfterEnv: [
-    '@testing-library/jest-dom/extend-expect', 
-    '@testing-library/react/cleanup-after-each'
-  ] // setupFiles before the tests are ran
+    '@testing-library/jest-dom/extend-expect',
+    '@testing-library/react/cleanup-after-each',
+  ], // setupFiles before the tests are ran
 };
