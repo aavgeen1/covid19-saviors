@@ -62,8 +62,8 @@ const validatePost = (post: Post): Errormessage[] => {
   // listingDaysLife
   if (
     post.listingDaysLife &&
-    !validator.min(1, post.listingDaysLife) &&
-    !validator.max(30, post.listingDaysLife)
+    validator.min(1, post.listingDaysLife) &&
+    validator.max(30, post.listingDaysLife)
   ) {
     errormessages.push({
       field: 'listingDaysLife',
@@ -73,23 +73,25 @@ const validatePost = (post: Post): Errormessage[] => {
   // picturesUris
   if (
     post.picturesUris &&
-    (!validator.isArray(post.picturesUris) ||
-      post.picturesUris.length < 1 ||
-      post.picturesUris.length > 3)
+    !validator.isArray(post.picturesUris) &&
+    post.picturesUris.length < 1 &&
+    post.picturesUris.length > 3
   ) {
     errormessages.push({
       field: 'picturesUris',
       message: 'Pictures should be max of 3 and min of 1.'
     });
   }
-  post.picturesUris.map((pictureUri) => {
-    if (!validator.isFQDN(pictureUri)) {
+  for (let i = 0; i < post.picturesUris.length; i++) {
+    const pictureUri = post.picturesUris[i];
+    if (validator.isFQDN(pictureUri)) {
       errormessages.push({
         field: 'picturesUris',
         message: 'Picture link not valid. Please try again.'
       });
+      break;
     }
-  });
+  }
   // Created and upadted dates need not to be valided.
   return errormessages;
 };

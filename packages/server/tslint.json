@@ -6,6 +6,8 @@
     ],
     "rules": {
         "no-console": false,
-        "trailing-comma": false
+        "trailing-comma": false,
+        "prefer-for-of": false,
+        "no-increment-decrement": false
     }
 }

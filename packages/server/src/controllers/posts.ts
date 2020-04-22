@@ -42,7 +42,7 @@ export default class PostController {
           description,
           address,
           pickup_location,
-          pictureUris,
+          picturesUris,
           providingOffering,
           itemType,
           phoneNumber,
@@ -58,7 +58,7 @@ export default class PostController {
       latitude: pickup_location.latitude,
       longitude: pickup_location.longitude
     };
-    postToBeSaved.picturesUris = pictureUris;
+    postToBeSaved.picturesUris = picturesUris;
     postToBeSaved.providingOffering = providingOffering;
     postToBeSaved.itemType = {
       cookedMeals: itemType.cookedMeals,
