@@ -17,7 +17,7 @@ const config: IConfig = {
   dbsslconn: process.env.NODE_ENV !== 'development',
   jwtSecret: process.env.JWT_SECRET || 'meranaam',
   dbuser: process.env.DB_USER,
-  dbpassword: process.env.DB_PASSWORD,
+  dbpassword: process.env.DB_PASSWORD
 };
 
 export { config };

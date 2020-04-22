@@ -13,7 +13,7 @@ const validatePost = (post: Post): Errormessage[] => {
   ) {
     errormessages.push({
       field: 'title',
-      message: 'Title length should be between 5 & 40 characters.',
+      message: 'Title length should be between 5 & 40 characters.'
     });
   }
   // description
@@ -24,8 +24,7 @@ const validatePost = (post: Post): Errormessage[] => {
   ) {
     errormessages.push({
       field: 'description',
-      message:
-        'Post description length should be between 10 & 2000 characters.',
+      message: 'Post description length should be between 10 & 2000 characters.'
     });
   }
   // pickup_location
@@ -38,7 +37,7 @@ const validatePost = (post: Post): Errormessage[] => {
   ) {
     errormessages.push({
       field: 'pickup_location',
-      message: 'Location is not valid.',
+      message: 'Location is not valid.'
     });
   }
   // address
@@ -49,7 +48,7 @@ const validatePost = (post: Post): Errormessage[] => {
   ) {
     errormessages.push({
       field: 'address',
-      message: 'Post address length should be between 10 & 400 characters.',
+      message: 'Post address length should be between 10 & 400 characters.'
     });
   }
   const phoneNumberRegexp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
@@ -57,7 +56,7 @@ const validatePost = (post: Post): Errormessage[] => {
   if (post.phoneNumber && !post.phoneNumber.match(phoneNumberRegexp)) {
     errormessages.push({
       field: 'phoneNumber',
-      message: 'Phone Number is not valid.',
+      message: 'Phone Number is not valid.'
     });
   }
   // listingDaysLife
@@ -68,7 +67,7 @@ const validatePost = (post: Post): Errormessage[] => {
   ) {
     errormessages.push({
       field: 'listingDaysLife',
-      message: 'Listing Days should be max of 30 and min of 1.',
+      message: 'Listing Days should be max of 30 and min of 1.'
     });
   }
   // picturesUris
@@ -80,14 +79,14 @@ const validatePost = (post: Post): Errormessage[] => {
   ) {
     errormessages.push({
       field: 'picturesUris',
-      message: 'Pictures should be max of 3 and min of 1.',
+      message: 'Pictures should be max of 3 and min of 1.'
     });
   }
   post.picturesUris.map((pictureUri) => {
     if (!validator.isFQDN(pictureUri)) {
       errormessages.push({
         field: 'picturesUris',
-        message: 'Picture link not valid. Please try again.',
+        message: 'Picture link not valid. Please try again.'
       });
     }
   });

@@ -27,7 +27,7 @@ export default class PostController {
       // return a BAD REQUEST status code and error message
       ctx.status = 400;
       ctx.body = {
-        error: "The post you are trying to retrieve doesn't exist.",
+        error: "The post you are trying to retrieve doesn't exist."
       };
     }
   }
@@ -46,9 +46,9 @@ export default class PostController {
           providingOffering,
           itemType,
           phoneNumber,
-          listingDaysLife,
-        },
-      },
+          listingDaysLife
+        }
+      }
     } = ctx;
     const postToBeSaved: Post = new post();
     postToBeSaved.title = title;
@@ -56,14 +56,14 @@ export default class PostController {
     postToBeSaved.address = address;
     postToBeSaved.pickup_location = {
       latitude: pickup_location.latitude,
-      longitude: pickup_location.longitude,
+      longitude: pickup_location.longitude
     };
     postToBeSaved.picturesUris = pictureUris;
     postToBeSaved.providingOffering = providingOffering;
     postToBeSaved.itemType = {
       cookedMeals: itemType.cookedMeals,
       groceries: itemType.groceries,
-      supplies: itemType.supplies,
+      supplies: itemType.supplies
     };
     postToBeSaved.phoneNumber = phoneNumber;
     postToBeSaved.listingDaysLife = listingDaysLife;
@@ -77,12 +77,12 @@ export default class PostController {
       ctx.status = 400;
       ctx.body = {
         type: 'validation',
-        error: errors,
+        error: errors
       };
     } else if (
       await post.findOne({
         description: postToBeSaved.description,
-        title: postToBeSaved.title,
+        title: postToBeSaved.title
       })
     ) {
       // return BAD REQUEST
@@ -91,9 +91,9 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: 'The specified post posting already exists.',
-          },
-        ],
+            message: 'The specified post posting already exists.'
+          }
+        ]
       };
     } else {
       // save the post contained in the POST body
@@ -135,7 +135,7 @@ export default class PostController {
       ctx.status = 400;
       ctx.body = {
         type: 'validation',
-        error: errors,
+        error: errors
       };
     } else if (!(await post.findById(ctx.params.id))) {
       // check if a user with the specified id exists
@@ -145,15 +145,15 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: "The post you are trying to update doesn't exist already",
-          },
-        ],
+            message: "The post you are trying to update doesn't exist already"
+          }
+        ]
       };
     } else {
       // save the post contained in the PUT body
       const newPost = await post.findByIdAndUpdate(
         ctx.params.id,
-        postToBeUpdated,
+        postToBeUpdated
       );
       // return CREATED/UPDATED status code and updated post
       ctx.status = 201;
@@ -171,9 +171,9 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: "The post you are trying to delete doesn't exist.",
-          },
-        ],
+            message: "The post you are trying to delete doesn't exist."
+          }
+        ]
       };
     } else {
       // the user is there so can be removed
@@ -181,7 +181,7 @@ export default class PostController {
       // return a NO CONTENT status code
       ctx.status = 204;
       ctx.body = {
-        message: 'Deleted the specified post.',
+        message: 'Deleted the specified post.'
       };
     }
   }

@@ -5,6 +5,7 @@
         "tslint-config-airbnb"
     ],
     "rules": {
-        "no-console": false
+        "no-console": false,
+        "trailing-comma": false
     }
 }
