@@ -107,20 +107,52 @@ export default class PostController {
   public static async updatePost(ctx: Context) {
     let postToBeUpdated: Post = new post();
     const document: any = {};
+    const {
+      request: {
+        body: {
+          title,
+          description,
+          address,
+          pickup_location,
+          picturesUris,
+          providingOffering,
+          itemType,
+          phoneNumber,
+          listingDaysLife
+        }
+      }
+    } = ctx;
     // postToBeUpdated.id = ctx.request.body.id
-    if (ctx.request.body.title) document.title = ctx.request.body.title;
-    if (ctx.request.body.description) {
-      document.description = ctx.request.body.description;
+    if (title) document.title = title;
+    if (description) {
+      document.description = description;
     }
-    if (ctx.request.body.picturesUris) {
-      document.picturesUris = ctx.request.body.picturesUris;
+    if (picturesUris) {
+      document.picturesUris = picturesUris;
     }
-    if (ctx.request.body.pickup_location.latitude) {
-      document.pickup_location.latitude = ctx.request.body.latitude;
+    if (address) {
+      document.address = address;
     }
-    if (ctx.request.body.pickup_location.longitude) {
-      document.pickup_location.longitude =
-        ctx.request.body.pickup_location.longitude;
+    if (pickup_location && pickup_location.latitude) {
+      document.pickup_location.latitude = pickup_location.latitude;
+    }
+    if (pickup_location && pickup_location.longitude) {
+      document.pickup_location.longitude = pickup_location.longitude;
+    }
+    if (address) {
+      document.address = address;
+    }
+    if (providingOffering) {
+      document.providingOffering = providingOffering;
+    }
+    if (itemType) {
+      document.itemType = itemType;
+    }
+    if (phoneNumber) {
+      document.phoneNumber = phoneNumber;
+    }
+    if (providingOffering) {
+      document.listingDaysLife = listingDaysLife;
     }
 
     document.updatedAt = new Date();
@@ -151,9 +183,11 @@ export default class PostController {
       };
     } else {
       // save the post contained in the PUT body
+      const options = { new: true };
       const newPost = await post.findByIdAndUpdate(
         ctx.params.id,
-        postToBeUpdated
+        postToBeUpdated,
+        options
       );
       // return CREATED/UPDATED status code and updated post
       ctx.status = 201;
