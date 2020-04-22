@@ -8,15 +8,15 @@ module.exports = {
       {
         alias: {
           react: require.resolve('react', {
-            paths: [path.join(__dirname, './')],
+            paths: [path.join(__dirname, './')]
           }),
           '^react-native$': require.resolve('react-native', {
-            paths: [path.join(__dirname, './')],
+            paths: [path.join(__dirname, './')]
           }),
           '^react-native/(.+)': ([, name]) =>
             require.resolve(`react-native/${name}`, {
-              paths: [path.join(__dirname, './')],
-            }),
+              paths: [path.join(__dirname, './')]
+            })
         },
         extensions: [
           '.ios.js',
@@ -30,9 +30,9 @@ module.exports = {
           '.native.tsx',
           '.js',
           '.ts',
-          '.tsx',
-        ],
-      },
-    ],
-  ],
+          '.tsx'
+        ]
+      }
+    ]
+  ]
 };

@@ -7,7 +7,7 @@ import * as winston from 'winston';
 import { logger } from './logging';
 import { config } from './config';
 import { postRoutes } from './routes';
-import mongo from './mongo';
+import connectDatabase from './connectDatabase';
 
 const app = new Koa();
 

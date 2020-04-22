@@ -1,7 +1,7 @@
 {
   "name": "@covid19-saviors/webapp",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/server.js",
   "license": "MIT",
   "dependencies": {
     "react": "^16.13.1",

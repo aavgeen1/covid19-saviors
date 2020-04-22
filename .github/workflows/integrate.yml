@@ -1,4 +1,4 @@
-name: React CI
+name: Project Workspaces CI
 
 on:
   pull_request:

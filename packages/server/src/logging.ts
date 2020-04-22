@@ -17,13 +17,13 @@ export function logger(winstonInstance: any) {
         format: winston.format.combine(
           winston.format.colorize(),
           winston.format.simple(),
-          winston.format.timestamp(),
-        ),
-      }),
+          winston.format.timestamp()
+        )
+      })
     ],
     exceptionHandlers: [
-      new winston.transports.File({ filename: 'exceptions.log' }),
-    ],
+      new winston.transports.File({ filename: 'exceptions.log' })
+    ]
   });
 
   return async (ctx: Koa.Context, next: () => Promise<any>) => {

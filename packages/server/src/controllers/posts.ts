@@ -27,7 +27,7 @@ export default class PostController {
       // return a BAD REQUEST status code and error message
       ctx.status = 400;
       ctx.body = {
-        error: "The post you are trying to retrieve doesn't exist.",
+        error: "The post you are trying to retrieve doesn't exist."
       };
     }
   }
@@ -35,13 +35,38 @@ export default class PostController {
   public static async createPost(ctx: Context) {
     // get a user repository to perform operations with user
     // build up entity user to be saved
+    const {
+      request: {
+        body: {
+          title,
+          description,
+          address,
+          pickup_location,
+          picturesUris,
+          providingOffering,
+          itemType,
+          phoneNumber,
+          listingDaysLife
+        }
+      }
+    } = ctx;
     const postToBeSaved: Post = new post();
-    postToBeSaved.title = ctx.request.body.title;
-    postToBeSaved.description = ctx.request.body.description;
-    postToBeSaved.address = ctx.request.body.address;
-    postToBeSaved.latitude = ctx.request.body.latitude;
-    postToBeSaved.longitude = ctx.request.body.longitude;
-    postToBeSaved.picturesUris = ctx.request.body.pictureUris;
+    postToBeSaved.title = title;
+    postToBeSaved.description = description;
+    postToBeSaved.address = address;
+    postToBeSaved.pickup_location = {
+      latitude: pickup_location.latitude,
+      longitude: pickup_location.longitude
+    };
+    postToBeSaved.picturesUris = picturesUris;
+    postToBeSaved.providingOffering = providingOffering;
+    postToBeSaved.itemType = {
+      cookedMeals: itemType.cookedMeals,
+      groceries: itemType.groceries,
+      supplies: itemType.supplies
+    };
+    postToBeSaved.phoneNumber = phoneNumber;
+    postToBeSaved.listingDaysLife = listingDaysLife;
     postToBeSaved.createdAt = new Date();
     // validate job entity
     const errors: Errormessage[] = validatePost(postToBeSaved);
@@ -52,13 +77,12 @@ export default class PostController {
       ctx.status = 400;
       ctx.body = {
         type: 'validation',
-        error: errors,
+        error: errors
       };
     } else if (
       await post.findOne({
         description: postToBeSaved.description,
-        title: postToBeSaved.title,
-        address: postToBeSaved.address,
+        title: postToBeSaved.title
       })
     ) {
       // return BAD REQUEST
@@ -67,9 +91,9 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: 'The specified post posting already exists.',
-          },
-        ],
+            message: 'The specified post posting already exists.'
+          }
+        ]
       };
     } else {
       // save the post contained in the POST body
@@ -83,21 +107,53 @@ export default class PostController {
   public static async updatePost(ctx: Context) {
     let postToBeUpdated: Post = new post();
     const document: any = {};
+    const {
+      request: {
+        body: {
+          title,
+          description,
+          address,
+          pickup_location,
+          picturesUris,
+          providingOffering,
+          itemType,
+          phoneNumber,
+          listingDaysLife
+        }
+      }
+    } = ctx;
     // postToBeUpdated.id = ctx.request.body.id
-    if (ctx.request.body.title) document.title = ctx.request.body.title;
-    if (ctx.request.body.description) {
-      document.description = ctx.request.body.description;
+    if (title) document.title = title;
+    if (description) {
+      document.description = description;
     }
-    if (ctx.request.body.picturesUris) {
-      document.picturesUris = ctx.request.body.picturesUris;
+    if (picturesUris) {
+      document.picturesUris = picturesUris;
     }
-    if (ctx.request.body.latitude) {
-      document.latitude = ctx.request.body.latitude;
+    if (address) {
+      document.address = address;
     }
-    if (ctx.request.body.longitude) {
-      document.longitude = ctx.request.body.longitude;
+    if (pickup_location && pickup_location.latitude) {
+      document.pickup_location.latitude = pickup_location.latitude;
     }
-    if (ctx.request.body.address) document.address = ctx.request.body.address;
+    if (pickup_location && pickup_location.longitude) {
+      document.pickup_location.longitude = pickup_location.longitude;
+    }
+    if (address) {
+      document.address = address;
+    }
+    if (providingOffering) {
+      document.providingOffering = providingOffering;
+    }
+    if (itemType) {
+      document.itemType = itemType;
+    }
+    if (phoneNumber) {
+      document.phoneNumber = phoneNumber;
+    }
+    if (providingOffering) {
+      document.listingDaysLife = listingDaysLife;
+    }
 
     document.updatedAt = new Date();
 
@@ -111,7 +167,7 @@ export default class PostController {
       ctx.status = 400;
       ctx.body = {
         type: 'validation',
-        error: errors,
+        error: errors
       };
     } else if (!(await post.findById(ctx.params.id))) {
       // check if a user with the specified id exists
@@ -121,15 +177,17 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: "The post you are trying to update doesn't already",
-          },
-        ],
+            message: "The post you are trying to update doesn't exist already"
+          }
+        ]
       };
     } else {
       // save the post contained in the PUT body
+      const options = { new: true };
       const newPost = await post.findByIdAndUpdate(
         ctx.params.id,
         postToBeUpdated,
+        options
       );
       // return CREATED/UPDATED status code and updated post
       ctx.status = 201;
@@ -147,9 +205,9 @@ export default class PostController {
         type: 'error',
         error: [
           {
-            message: "The post you are trying to delete doesn't exist.",
-          },
-        ],
+            message: "The post you are trying to delete doesn't exist."
+          }
+        ]
       };
     } else {
       // the user is there so can be removed
@@ -157,7 +215,7 @@ export default class PostController {
       // return a NO CONTENT status code
       ctx.status = 204;
       ctx.body = {
-        message: 'Deleted the specified post.',
+        message: 'Deleted the specified post.'
       };
     }
   }
