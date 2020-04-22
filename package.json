@@ -12,7 +12,7 @@
     "clean:root": "rm -rf node_modules",
     "lint:js:common": "cd packages/common && yarn lint:js && cd ../..",
     "lint:js:app": "cd packages/mobileapp && yarn lint:js && cd ../..",
-    "lint:js:server": "cd packages/server && yarn lint:js && cd ../..",
+    "lint:js:server": "cd packages/server && yarn lint && cd ../..",
     "lint:js:web": "cd packages/webapp && yarn lint:js && cd ../..",
     "lint:js": "yarn lint:js:common && yarn lint:js:app && yarn lint:js:server && yarn lint:js:web",
     "lint:css:web": "cd packages/webapp && yarn lint:css && cd ../..",
