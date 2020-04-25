@@ -1,12 +1,50 @@
-import { BaseContext, Context } from 'koa';
+import { Context } from 'koa';
 import { post } from '../models';
-import {} from 'mongoose';
 import { Post, Errormessage } from '../types';
 import { validatePost } from '../utils/validator';
 
 export default class PostController {
-  public static async getPosts(ctx: BaseContext) {
-    await post.find((err, postsRes: Post[]) => {
+  public static async getPosts(ctx: Context) {
+    console.log(ctx.request.query);
+    // Search Params: latitude & longitude
+    // searchString: for search in title, description and address
+    // itemType: one of (cookedMeals, groceries or supplies)
+    let {
+      latitude,
+      longitude,
+      itemType
+    }: {
+      latitude: string;
+      longitude: string;
+      itemType: string;
+    } = ctx.request.query;
+    const { searchString }: { searchString: string } = ctx.request.query;
+    if (
+      itemType !== 'cookedMeals' &&
+      itemType !== 'groceries' &&
+      itemType !== 'supplies'
+    ) {
+      itemType = undefined;
+    }
+    if (!latitude || !longitude) {
+      latitude = undefined;
+      longitude = undefined;
+    }
+    const queryCond = {
+      ...(latitude && { 'pickup_location.latitude': parseFloat(latitude) }),
+      ...(longitude && { 'pickup_location.longitude': parseFloat(longitude) }),
+      ...(itemType && { 'itemType.cookedMeals': itemType === 'cookedMeals' }),
+      ...(itemType && { 'itemType.groceries': itemType === 'groceries' }),
+      ...(itemType && { 'itemType.supplies': itemType === 'supplies' }),
+      ...(searchString && {
+        $or: [
+          { title: RegExp(searchString, 'i') },
+          { description: RegExp(searchString, 'i') },
+          { address: RegExp(searchString, 'i') }
+        ]
+      })
+    };
+    await post.find(queryCond, (err, postsRes: Post[]) => {
       if (err) {
         ctx.status = 500;
         ctx.body = { error: 'Internal Server Error' };
