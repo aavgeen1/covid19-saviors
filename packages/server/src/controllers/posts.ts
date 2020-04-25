@@ -9,6 +9,8 @@ export default class PostController {
     // Search Params: latitude & longitude
     // searchString: for search in title, description and address
     // itemType: one of (cookedMeals, groceries or supplies)
+    // distance: in kms for nearness of location
+    const DEFAULT_DISTANCE = 2000; // 2km
     let {
       latitude,
       longitude,
@@ -18,7 +20,10 @@ export default class PostController {
       longitude: string;
       itemType: string;
     } = ctx.request.query;
-    const { searchString }: { searchString: string } = ctx.request.query;
+    const {
+      searchString,
+      distance
+    }: { searchString: string; distance: string } = ctx.request.query;
     if (
       itemType !== 'cookedMeals' &&
       itemType !== 'groceries' &&
@@ -31,8 +36,6 @@ export default class PostController {
       longitude = undefined;
     }
     const queryCond = {
-      ...(latitude && { 'pickup_location.latitude': parseFloat(latitude) }),
-      ...(longitude && { 'pickup_location.longitude': parseFloat(longitude) }),
       ...(itemType && { 'itemType.cookedMeals': itemType === 'cookedMeals' }),
       ...(itemType && { 'itemType.groceries': itemType === 'groceries' }),
       ...(itemType && { 'itemType.supplies': itemType === 'supplies' }),
@@ -42,7 +45,21 @@ export default class PostController {
           { description: RegExp(searchString, 'i') },
           { address: RegExp(searchString, 'i') }
         ]
-      })
+      }),
+      ...(latitude &&
+        longitude && {
+          pickup_location: {
+            $near: {
+              $maxDistance: distance
+                ? parseInt(distance, 10) * 1000
+                : DEFAULT_DISTANCE,
+              $geometry: {
+                type: 'Point',
+                coordinates: [parseFloat(longitude), parseFloat(latitude)]
+              }
+            }
+          }
+        })
     };
     await post.find(queryCond, (err, postsRes: Post[]) => {
       if (err) {
@@ -93,8 +110,11 @@ export default class PostController {
     postToBeSaved.description = description;
     postToBeSaved.address = address;
     postToBeSaved.pickup_location = {
-      latitude: pickup_location.latitude,
-      longitude: pickup_location.longitude
+      type: 'Point',
+      coordinates: [
+        parseFloat(pickup_location.longitude),
+        parseFloat(pickup_location.latitude)
+      ]
     };
     postToBeSaved.picturesUris = picturesUris;
     postToBeSaved.providingOffering = providingOffering;
@@ -172,10 +192,14 @@ export default class PostController {
       document.address = address;
     }
     if (pickup_location && pickup_location.latitude) {
-      document.pickup_location.latitude = pickup_location.latitude;
+      document.pickup_location.coordinates[1] = parseFloat(
+        pickup_location.latitude
+      );
     }
     if (pickup_location && pickup_location.longitude) {
-      document.pickup_location.longitude = pickup_location.longitude;
+      document.pickup_location.coordinates[0] = parseFloat(
+        pickup_location.longitude
+      );
     }
     if (address) {
       document.address = address;

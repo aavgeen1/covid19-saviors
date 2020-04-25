@@ -1,8 +1,8 @@
 export type Errormessage = { field: string; message: string };
 
 export type PickupLocation = {
-  latitude: string;
-  longitude: string;
+  type: string;
+  coordinates: number[];
 };
 
 export type ItemType = {
