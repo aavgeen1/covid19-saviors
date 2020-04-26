@@ -1,22 +1,15 @@
 import React from 'react';
-import {title} from '@covid19-saviors/common/utils';
-import {Text, View} from 'react-native';
-import {add} from '@covid19-saviors/common/utils';
-import {Provider as PaperProvider, Button} from 'react-native-paper';
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 
-const App = () => {
-  return (
-    <PaperProvider>
-      <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-        <Text style={{fontSize: 24}}>{title}</Text>
-        <Text style={{fontSize: 16, marginVertical: 16}}>
-          {'1 + 1 = '}
-          {add(1, 1)}
-        </Text>
-        <Button mode="contained">Hello</Button>
-      </View>
-    </PaperProvider>
-  );
-};
+const HomeScreen = () => (
+  <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <Text category="h1">HOME</Text>
+  </Layout>
+);
 
-export default App;
+export default () => (
+  <ApplicationProvider {...eva} theme={eva.light}>
+    <HomeScreen />
+  </ApplicationProvider>
+);

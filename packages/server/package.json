@@ -12,7 +12,8 @@
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "yarn prettier:base --list-different \"src/**/*.ts\"",
     "prettier:fix": "yarn prettier:base --write \"src/**/*.ts\"",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "clean": "rm -rf node_modules"
   },
   "license": "MIT",
   "lint-staged": {
