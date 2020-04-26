@@ -10,8 +10,9 @@ const postSchema: Schema = new Schema({
     example: 'Food for 100 people required in delhi'
   },
   pickup_location: {
-    latitude: { type: 'number', required: true },
-    longitude: { type: 'number', required: true }
+    type: { type: String, default: 'Point' },
+    required: false,
+    coordinates: [Number]
   },
   address: { type: 'string', required: true },
   picturesUris: {
@@ -69,6 +70,7 @@ const postSchema: Schema = new Schema({
   updatedAt: { type: 'string', required: false, example: new Date() }
 });
 
+postSchema.index({ pickup_location: '2dsphere' });
 const post: Model<Post> = model<Post>('post', postSchema);
 
 export default post;

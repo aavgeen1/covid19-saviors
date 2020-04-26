@@ -1,20 +1,86 @@
-import { BaseContext, Context } from 'koa';
+import { Context } from 'koa';
 import { post } from '../models';
-import {} from 'mongoose';
 import { Post, Errormessage } from '../types';
 import { validatePost } from '../utils/validator';
 
 export default class PostController {
-  public static async getPosts(ctx: BaseContext) {
-    await post.find((err, postsRes: Post[]) => {
-      if (err) {
-        ctx.status = 500;
-        ctx.body = { error: 'Internal Server Error' };
-      } else {
-        ctx.status = 200;
-        ctx.body = postsRes;
-      }
-    });
+  public static async getPosts(ctx: Context) {
+    console.log(ctx.request.query);
+    // Search Params: latitude & longitude
+    // searchString: for search in title, description and address
+    // itemType: one of (cookedMeals, groceries or supplies)
+    // distance: in kms for nearness of location
+    // offset & limit: for pagination (fb's way)
+    const DEFAULT_DISTANCE = 2000; // 2km
+    let {
+      latitude,
+      longitude,
+      itemType
+    }: {
+      latitude: string;
+      longitude: string;
+      itemType: string;
+    } = ctx.request.query;
+    const {
+      searchString,
+      distance,
+      offset,
+      limit
+    }: {
+      searchString: string;
+      distance: string;
+      offset: string;
+      limit: string;
+    } = ctx.request.query;
+    if (
+      itemType !== 'cookedMeals' &&
+      itemType !== 'groceries' &&
+      itemType !== 'supplies'
+    ) {
+      itemType = undefined;
+    }
+    if (!latitude || !longitude) {
+      latitude = undefined;
+      longitude = undefined;
+    }
+    const queryCond = {
+      ...(itemType && { 'itemType.cookedMeals': itemType === 'cookedMeals' }),
+      ...(itemType && { 'itemType.groceries': itemType === 'groceries' }),
+      ...(itemType && { 'itemType.supplies': itemType === 'supplies' }),
+      ...(searchString && {
+        $or: [
+          { title: RegExp(searchString, 'i') },
+          { description: RegExp(searchString, 'i') },
+          { address: RegExp(searchString, 'i') }
+        ]
+      }),
+      ...(latitude &&
+        longitude && {
+          pickup_location: {
+            $near: {
+              $maxDistance: distance
+                ? parseInt(distance, 10) * 1000
+                : DEFAULT_DISTANCE,
+              $geometry: {
+                type: 'Point',
+                coordinates: [parseFloat(longitude), parseFloat(latitude)]
+              }
+            }
+          }
+        })
+    };
+    try {
+      const postsResponse: Post[] = await post
+        .find(queryCond)
+        .sort({ pickup_location: 'desc' })
+        .limit(parseInt(limit, 10))
+        .skip(parseInt(offset, 10));
+      ctx.status = 200;
+      ctx.body = postsResponse;
+    } catch (err) {
+      ctx.status = 500;
+      ctx.body = { error: 'Internal Server Error' };
+    }
   }
   public static async getPost(ctx: Context) {
     const postRes = await post.findById(ctx.params.id || 0);
@@ -55,8 +121,11 @@ export default class PostController {
     postToBeSaved.description = description;
     postToBeSaved.address = address;
     postToBeSaved.pickup_location = {
-      latitude: pickup_location.latitude,
-      longitude: pickup_location.longitude
+      type: 'Point',
+      coordinates: [
+        parseFloat(pickup_location.longitude),
+        parseFloat(pickup_location.latitude)
+      ]
     };
     postToBeSaved.picturesUris = picturesUris;
     postToBeSaved.providingOffering = providingOffering;
@@ -134,10 +203,14 @@ export default class PostController {
       document.address = address;
     }
     if (pickup_location && pickup_location.latitude) {
-      document.pickup_location.latitude = pickup_location.latitude;
+      document.pickup_location.coordinates[1] = parseFloat(
+        pickup_location.latitude
+      );
     }
     if (pickup_location && pickup_location.longitude) {
-      document.pickup_location.longitude = pickup_location.longitude;
+      document.pickup_location.coordinates[0] = parseFloat(
+        pickup_location.longitude
+      );
     }
     if (address) {
       document.address = address;

@@ -30,10 +30,10 @@ const validatePost = (post: Post): Errormessage[] => {
   // pickup_location
   if (
     post.pickup_location &&
-    post.pickup_location.latitude &&
-    !validator.isNumber(post.pickup_location.latitude) &&
-    post.pickup_location.longitude &&
-    !validator.isNumber(post.pickup_location.longitude)
+    post.pickup_location.coordinates[1] &&
+    !validator.isNumber(post.pickup_location.coordinates[1]) &&
+    post.pickup_location.coordinates[0] &&
+    !validator.isNumber(post.pickup_location.coordinates[0])
   ) {
     errormessages.push({
       field: 'pickup_location',
