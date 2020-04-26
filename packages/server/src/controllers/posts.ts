@@ -10,6 +10,7 @@ export default class PostController {
     // searchString: for search in title, description and address
     // itemType: one of (cookedMeals, groceries or supplies)
     // distance: in kms for nearness of location
+    // offset & limit: for pagination (fb's way)
     const DEFAULT_DISTANCE = 2000; // 2km
     let {
       latitude,
@@ -22,8 +23,15 @@ export default class PostController {
     } = ctx.request.query;
     const {
       searchString,
-      distance
-    }: { searchString: string; distance: string } = ctx.request.query;
+      distance,
+      offset,
+      limit
+    }: {
+      searchString: string;
+      distance: string;
+      offset: string;
+      limit: string;
+    } = ctx.request.query;
     if (
       itemType !== 'cookedMeals' &&
       itemType !== 'groceries' &&
@@ -61,15 +69,18 @@ export default class PostController {
           }
         })
     };
-    await post.find(queryCond, (err, postsRes: Post[]) => {
-      if (err) {
-        ctx.status = 500;
-        ctx.body = { error: 'Internal Server Error' };
-      } else {
-        ctx.status = 200;
-        ctx.body = postsRes;
-      }
-    });
+    try {
+      const postsResponse: Post[] = await post
+        .find(queryCond)
+        .sort({ pickup_location: 'desc' })
+        .limit(parseInt(limit, 10))
+        .skip(parseInt(offset, 10));
+      ctx.status = 200;
+      ctx.body = postsResponse;
+    } catch (err) {
+      ctx.status = 500;
+      ctx.body = { error: 'Internal Server Error' };
+    }
   }
   public static async getPost(ctx: Context) {
     const postRes = await post.findById(ctx.params.id || 0);
