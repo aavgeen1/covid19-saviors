@@ -1,15 +1,23 @@
-import React from 'react';
-import * as eva from '@eva-design/eva';
-import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
+import * as React from 'react';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import {PostAddForm} from './src/screens/';
 
-const HomeScreen = () => (
-  <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <Text category="h1">HOME</Text>
-  </Layout>
-);
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#3498db',
+    accent: '#f1c40f'
+  }
+};
 
-export default () => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    <HomeScreen />
-  </ApplicationProvider>
-);
+const App = () => {
+  return (
+    <PaperProvider theme={theme}>
+      <PostAddForm />
+    </PaperProvider>
+  );
+}
+
+export default App;

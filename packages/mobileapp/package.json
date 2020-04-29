@@ -23,16 +23,13 @@
   },
   "dependencies": {
     "@covid19-saviors/common": "1.0.0",
-    "@eva-design/eva": "^1.4.0",
-    "@ui-kitten/components": "^4.4.1",
+    "@ui-kitten/eva-icons": "^5.0.0-alpha.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-svg": "^12.1.0"
+    "react-native-paper": "^3.8.0",
+    "react-native-vector-icons": "^6.6.0"
   },
-  "peerDependencies": {
-    "react-native-svg": "^12.1.0",
-    "@ui-kitten/components": "^4.4.1"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
